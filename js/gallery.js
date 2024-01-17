@@ -64,61 +64,45 @@ const images = [
   },
 ];
 
-class Gallery {
-  constructor(galleryClass) {
-    this.galleryClass = galleryClass;
-  }
+const list = document.createElement('ul');
+document.body.prepend(list);
+list.classList.add('gallery');
 
-  createList(tag = 'ul') {
-    this.list = document.createElement(tag);
-    document.body.prepend(this.list);
-    this.list.classList.add(this.galleryClass);
-  }
-
-  addImages(images) {
-    this.imagesList = images
-      .map(
-        image =>
-          `<li class="gallery-item">
+const imagesList = images
+  .map(
+    image =>
+      `<li class="gallery-item">
             <a class="gallery-link" href="${image.original}">
               <img src="${image.preview}" alt="${image.description}" data-source="${image.original}" width="360" height="200">
             </a>
           </li>`
-      )
-      .join('');
-  }
+  )
+  .join('');
 
-  render() {
-    this.list.insertAdjacentHTML('afterbegin', this.imagesList);
-  }
+list.insertAdjacentHTML('afterbegin', imagesList);
 
-  zoomImage() {}
+list.addEventListener('click', e => {
+  e.preventDefault();
+});
 
-  preventDownload(condition = 'true') {
-    if (condition) {
-      this.list.addEventListener('click', e => {
-        e.preventDefault();
-      });
+list.addEventListener('click', e => {
+  if (e.target.nodeName === 'IMG') {
+    function closeModal(e) {
+      if (e.code === 'Escape') {
+        modal.close();
+      }
     }
+    const modal = basicLightbox.create(
+      `<img src="${e.target.dataset.source}">`,
+      {
+        onShow: () => {
+          document.addEventListener('keydown', closeModal);
+        },
+        onClose: () => {
+          document.removeEventListener('keydown', closeModal);
+        },
+      }
+    );
+    modal.show();
   }
-
-  showAlert() {
-    this.list.addEventListener('click', e => {
-      alert(e.currentTarget);
-    });
-  }
-
-  setPosition(position = 'center') {
-    this.list.classList.add(position);
-  }
-}
-
-const gallery = new Gallery('gallery');
-gallery.createList('ul');
-gallery.addImages(images);
-gallery.setPosition('center');
-gallery.preventDownload(true);
-gallery.showAlert();
-gallery.render();
-
-const modal = basicLightbox.create(``);
+});
