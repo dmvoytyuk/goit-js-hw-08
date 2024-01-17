@@ -64,4 +64,61 @@ const images = [
   },
 ];
 
+class Gallery {
+  constructor(galleryClass) {
+    this.galleryClass = galleryClass;
+  }
+
+  createList(tag = 'ul') {
+    this.list = document.createElement(tag);
+    document.body.prepend(this.list);
+    this.list.classList.add(this.galleryClass);
+  }
+
+  addImages(images) {
+    this.imagesList = images
+      .map(
+        image =>
+          `<li class="gallery-item">
+            <a class="gallery-link" href="${image.original}">
+              <img src="${image.preview}" alt="${image.description}" data-source="${image.original}" width="360" height="200">
+            </a>
+          </li>`
+      )
+      .join('');
+  }
+
+  render() {
+    this.list.insertAdjacentHTML('afterbegin', this.imagesList);
+  }
+
+  zoomImage() {}
+
+  preventDownload(condition = 'true') {
+    if (condition) {
+      this.list.addEventListener('click', e => {
+        e.preventDefault();
+      });
+    }
+  }
+
+  showAlert() {
+    this.list.addEventListener('click', e => {
+      alert(e.currentTarget);
+    });
+  }
+
+  setPosition(position = 'center') {
+    this.list.classList.add(position);
+  }
+}
+
+const gallery = new Gallery('gallery');
+gallery.createList('ul');
+gallery.addImages(images);
+gallery.setPosition('center');
+gallery.preventDownload(true);
+gallery.showAlert();
+gallery.render();
+
 const modal = basicLightbox.create(``);
