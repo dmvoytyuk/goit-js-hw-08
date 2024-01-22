@@ -64,9 +64,9 @@ const images = [
   },
 ];
 
-const list = document.createElement('ul');
+const galleryList = document.createElement('ul');
 document.body.prepend(list);
-list.classList.add('gallery');
+galleryList.classList.add('gallery');
 
 const imagesList = images
   .map(
@@ -79,13 +79,13 @@ const imagesList = images
   )
   .join('');
 
-list.insertAdjacentHTML('afterbegin', imagesList);
+galleryList.insertAdjacentHTML('afterbegin', imagesList);
 
-list.addEventListener('click', e => {
+galleryList.addEventListener('click', e => {
   e.preventDefault();
 });
 
-list.addEventListener('click', e => {
+galleryList.addEventListener('click', e => {
   if (e.target.nodeName === 'IMG') {
     function closeModal(e) {
       if (e.code === 'Escape') {
