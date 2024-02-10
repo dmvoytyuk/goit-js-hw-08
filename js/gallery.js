@@ -65,7 +65,7 @@ const images = [
 ];
 
 const galleryList = document.createElement('ul');
-document.body.prepend(list);
+document.body.prepend(galleryList);
 galleryList.classList.add('gallery');
 
 const imagesList = images
